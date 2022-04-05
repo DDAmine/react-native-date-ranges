@@ -37,8 +37,8 @@ export default class ComposePicker extends Component {
       date: new Date(),
       focus: 'startDate',
       currentDate: moment(),
-      textStartDate: 'Start Date',
-      textEndDate: 'End Date'
+      textStartDate: 'Check In',
+      textEndDate: 'Check Out'
     };
   }
   isDateBlocked = date => {
