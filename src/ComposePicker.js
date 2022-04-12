@@ -1,21 +1,25 @@
 import React, { Component } from 'react';
-import { View, TouchableHighlight, Modal, Text } from 'react-native';
+import { View, TouchableHighlight, Modal, Text,Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 import DateRange from './DateRange';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import moment from 'moment';
 import normalize from './normalizeText';
+const windowWidth = Dimensions.get('screen').width;
+const windowHeight = Dimensions.get('screen').height;
 
 const styles = {
   placeholderText: {
     color: '#c9c9c9',
-    fontSize: normalize(18)
+    fontSize: normalize(18),
+   
   },
   contentInput: {
     alignItems: 'center',
     justifyContent: 'center'
   },
   contentText: {
-    fontSize: normalize(18)
+    fontSize: normalize(16)
   },
   stylish: {
     height: 48,
@@ -31,14 +35,12 @@ export default class ComposePicker extends Component {
       modalVisible: false,
       allowPointerEvents: true,
       showContent: false,
-      selected: '',
+      selected: {},
       startDate: null,
       endDate: null,
       date: new Date(),
       focus: 'startDate',
-      currentDate: moment(),
-      textStartDate: 'Check In',
-      textEndDate: 'Check Out'
+      currentDate: moment()
     };
   }
   isDateBlocked = date => {
@@ -84,7 +86,10 @@ export default class ComposePicker extends Component {
       const end = this.state.endDate.format(outFormat);
       this.setState({
         showContent: true,
-        selected: `${start} ${this.props.dateSplitter} ${end}`
+        selected: {
+          start: start,
+          end: end
+        }
       });
       this.setModalVisible(false);
 
@@ -103,21 +108,96 @@ export default class ComposePicker extends Component {
     const showContent = this.state.showContent;
     if (!showContent && placeholder) {
       return (
+        <View style={{flexDirection:'row' , justifyContent:'center' ,backgroundColor:'#fafafa', alignContent:'center' }} >
+      
+        
+      <View style={{  paddingVertical:10, marginHorizontal:5 , width:windowWidth*0.3,backgroundColor:'#fff' , alignItems:'center' , paddingHorizontal:5 , height:0.1*windowHeight, justifyContent:'center', elevation: 3,
+                    shadowOffset: { width: 1, height: 1 },
+                    shadowColor: '#333',
+                    shadowOpacity: 0.3,
+                    shadowRadius: 2}}>
+      
         <Text
-          allowFontScaling={allowFontScaling}
-          style={[styles.placeholderText, customStyles.placeholderText]}
-        >
-          {placeholder}
+          allowFontScaling={false}
+          style={[styles.contentText, customStyles.contentText]}
+        > 
+           Check In
         </Text>
+      </View>
+      <View style={{justifyContent:'center', alignContent:'center', marginHorizontal:10}}>
+      
+        <FontAwesome5 name='calendar-alt' size={50} />
+      </View>
+      
+      
+      
+        
+        <View style={{ backgroundColor:'#fff', paddingVertical:10 ,width:windowWidth*0.3, marginHorizontal:5,alignItems:'center',paddingHorizontal:5, height:0.1*windowHeight, justifyContent:'center',elevation: 3,
+                    shadowOffset: { width: 1, height: 1 },
+                    shadowColor: '#333',
+                    shadowOpacity: 0.3,
+                    shadowRadius: 2}}>
+        
+        <Text
+          allowFontScaling={false}
+          style={[styles.contentText, customStyles.contentText]}
+        > 
+          Check Out
+        </Text>
+      </View>
+      </View>
+      
+
+    
       );
     }
-    return (
-      <Text
-        allowFontScaling={allowFontScaling}
-        style={[styles.contentText, customStyles.contentText]}
-      >
-        {this.state.selected}
-      </Text>
+    return (<View style={{flexDirection:'row' , justifyContent:'space-between' ,backgroundColor:'#fafafa' }} >
+      <View style={{ alignItems:'center', paddingVertical:5}}>
+        <Text style={{color:'black', fontSize:18}}>
+          Check In
+        </Text>
+      <View style={{  paddingVertical:10, marginHorizontal:5 ,backgroundColor:'#fff' , alignItems:'center' , paddingHorizontal:5 , height:0.1*windowHeight, justifyContent:'center', elevation: 3,
+                    shadowOffset: { width: 1, height: 1 },
+                    shadowColor: '#333',
+                    shadowOpacity: 0.3,
+                    shadowRadius: 2}}>
+      
+        <Text
+          allowFontScaling={false}
+          style={[styles.contentText, customStyles.contentText]}
+        > 
+          {this.state.selected.start}
+        </Text>
+      </View>
+      </View>
+      <View style={{justifyContent:'center', alignContent:'center' , marginHorizontal:10}}>
+      <Text style={{color:'#fafafa'}}>
+          C
+        </Text>
+        <FontAwesome5 name='calendar-alt' size={50} />
+      </View>
+      <View style={{ alignItems:'center' , paddingVertical:5}}>
+        <Text style={{color:'black', fontSize:18}}>
+          Check Out
+        </Text>
+        <View style={{ backgroundColor:'#fff', paddingVertical:10 , marginHorizontal:5,alignItems:'center',paddingHorizontal:5, height:0.1*windowHeight, justifyContent:'center',elevation: 3,
+                    shadowOffset: { width: 1, height: 1 },
+                    shadowColor: '#333',
+                    shadowOpacity: 0.3,
+                    shadowRadius: 2}}>
+        
+        <Text
+          allowFontScaling={false}
+          style={[styles.contentText, customStyles.contentText]}
+        > 
+          {this.state.selected.end}
+        </Text>
+      </View>
+      </View>
+      
+
+    </View>
+
     );
   }
 
@@ -137,7 +217,7 @@ export default class ComposePicker extends Component {
         ]}
       >
         <Text style={[{ fontSize: 20 }, this.props.ButtonTextStyle]}>
-          {this.props.ButtonText ? this.props.ButtonText : '送出'}
+          {this.props.ButtonText ? this.props.ButtonText : 'Confirm'}
         </Text>
       </TouchableHighlight>
     );
@@ -157,7 +237,7 @@ export default class ComposePicker extends Component {
           this.setModalVisible(true);
         }}
         style={[
-          { height: '100%', justifyContent: 'center' },
+          { width: '100%', height: '100%', justifyContent: 'center' },
           style
         ]}
       >
@@ -173,7 +253,7 @@ export default class ComposePicker extends Component {
             transparent={false}
             visible={this.state.modalVisible}
           >
-            <View style={{ flex: 1, flexDirection: 'column' , backgroundColor: this.props.calendarBgColor}}>
+            <View stlye={{ flex: 1, flexDirection: 'column' }}>
               <View style={{ height: '90%' }}>
                 <DateRange
                   headFormat={this.props.headFormat}
@@ -184,13 +264,10 @@ export default class ComposePicker extends Component {
                   startDate={this.state.startDate}
                   endDate={this.state.endDate}
                   focusedInput={this.state.focus}
-                  calendarBgColor={this.props.calendarBgColor || undefined}
                   selectedBgColor={this.props.selectedBgColor || undefined}
                   selectedTextColor={this.props.selectedTextColor || undefined}
                   mode={this.props.mode || 'single'}
                   currentDate={this.state.currentDate}
-                  textStartDate={this.state.textStartDate}
-                  textEndDate={this.state.textEndDate}
                 />
               </View>
               <View
