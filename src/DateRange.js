@@ -64,9 +64,7 @@ export default class DateRange extends Component {
       clearEnd: "",
       clearSingle: props.currentDate.format(defalutFormat) || "",
       selectState: "monthAndDate", // or year
-      selectedYear: null,
-      textStartDate: props.textStartDate || "Start Date",
-      textEndDate: props.textEndDate || "End Date",
+      selectedYear: null
     };
   }
   previousMonth = () => {
@@ -177,33 +175,32 @@ export default class DateRange extends Component {
               <Text style={markTitle}>{markText}</Text>
               <View style={styles.dateContainer}>
                 <Text style={headerDate}>
-                  {this.state.clearStart ? this.state.clearStart : this.state.textStartDate}
+                  {this.state.clearStart ? this.state.clearStart : "Check-In"}
                 </Text>
                 <Text style={styles.headTitleText} />
                 <Text style={headerDate}>
-                  {this.state.clearEnd ? this.state.clearEnd : this.state.textEndDate}
+                  {this.state.clearEnd ? this.state.clearEnd : "Check-out"}
                 </Text>
               </View>
             </View>
           )}
         </View>
         {this.state.selectState === "monthAndDate" && (
-          <View style={[styles.calendar, {backgroundColor: this.props.calendarBgColor}]}>
+          <View style={styles.calendar}>
             <View style={styles.headActionContainer}>
               <TouchableOpacity onPress={this.previousMonth}>
                 <Text
                   style={{
                     paddingHorizontal: 15,
                     fontSize: 18,
-                    fontWeight: "bold",
-                    ...customStyles.monthPickerText
+                    fontWeight: "bold"
                   }}
                 >
                   {"<"}
                 </Text>
               </TouchableOpacity>
               <Text
-                style={{ fontSize: 20, color: "black", fontWeight: "bold", ...customStyles.monthPickerText }}
+                style={{ fontSize: 20, color: "black", fontWeight: "bold" }}
               >
                 {this.state.focusedMonth.format("MMMM YYYY")}
               </Text>
@@ -212,8 +209,7 @@ export default class DateRange extends Component {
                   style={{
                     paddingHorizontal: 15,
                     fontSize: 18,
-                    fontWeight: "bold",
-                    ...customStyles.monthPickerText
+                    fontWeight: "bold"
                   }}
                 >
                   {">"}
@@ -221,7 +217,6 @@ export default class DateRange extends Component {
               </TouchableOpacity>
             </View>
             <Month
-              customStyles={customStyles}
               mode={this.props.mode}
               date={this.props.date}
               startDate={this.props.startDate}
@@ -241,7 +236,7 @@ export default class DateRange extends Component {
           <View
             style={[
               styles.calendar,
-              { height: "75%", justifyContent: "center", backgroundColor: this.props.calendarBgColor }
+              { height: "75%", justifyContent: "center" }
             ]}
           >
             <Picker
