@@ -96,7 +96,9 @@ export default class ComposePicker extends Component {
       if (typeof this.props.onConfirm === 'function') {
         this.props.onConfirm({
           startDate: this.state.startDate.format(returnFormat),
-          endDate: this.state.endDate.format(returnFormat)
+          endDate: this.state.endDate.format(returnFormat),
+          startWeb : this.state.startDate.format('DD/MM/YYYY'),
+          endWeb : this.state.endDate.format('DD/MM/YYYY')
         });
       }
     } else {
